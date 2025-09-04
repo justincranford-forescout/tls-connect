@@ -268,10 +268,20 @@ INFO:   Not After: Thu Feb 05 23:59:59 GMT 2026
 - **CPU Emulation**: VirtualApple CPU emulation doesn't fully support x86_64 entropy instructions
 - **JENT Requirements**: The native library `libbcjent-jent.so` requires specific CPU entropy features
 
-**Technical Details**: 
-- JENT uses hardware-specific entropy gathering instructions (e.g., RDTSC, RDRAND)
-- These instructions may not be properly emulated in Rosetta/QEMU translation layers
-- The SIGILL (Illegal Instruction) occurs when the native library tries to execute unsupported instructions
+**Detailed Technical Information**:
+- **Provider Class**: `org.bouncycastle.entropy.provider.BouncyCastleEntropyProvider`
+- **JAR File**: `/usr/share/java/bouncycastle-fips/bc-rng-jent.jar`
+- **Native Libraries in JAR**:
+  ```
+  native/linux/arm64/jent/7/libbcjent-jent.so
+  native/linux/arm64/jent/7/libjitterentropy.so.3.6.1
+  native/linux/x86_64/jent/7/libbcjent-jent.so
+  native/linux/x86_64/jent/7/libjitterentropy.so.3.6.1
+  ```
+- **Container Selects**: x86_64 native libraries since container runs AMD64
+- **JENT Instructions**: Uses hardware-specific entropy gathering instructions (e.g., RDTSC, RDRAND)
+- **Emulation Failure**: These instructions may not be properly emulated in Rosetta/QEMU translation layers
+- **Result**: The SIGILL (Illegal Instruction) occurs when the native library tries to execute unsupported instructions
 
 **Solution**: Use kernel entropy configuration to bypass JENT entirely:
 ```bash
@@ -402,10 +412,22 @@ java --class-path "target/classes:$JAVA_FIPS_CLASSPATH" com.justincranford.tls.T
 ├── bctls-fips.jar        # TLS provider  
 ├── bcpkix-fips.jar       # PKI/X.509 support
 ├── bcutil-fips.jar       # Utilities
-├── bc-rng-jent.jar       # Hardware entropy (problematic)
-└── bcmail-fips.jar.      # S/MIME
+├── bc-rng-jent.jar       # Hardware entropy (problematic on emulated systems)
+├── bcmail-fips.jar       # S/MIME
 └── bcpg-fips.jar         # OpenPGP
 ```
+
+**JENT (Jitterentropy) Details**:
+- **JAR**: `bc-rng-jent.jar` contains `org.bouncycastle.entropy.provider.BouncyCastleEntropyProvider`
+- **Native Libraries**: Contains both ARM64 and x86_64 versions:
+  ```
+  native/linux/arm64/jent/7/libbcjent-jent.so
+  native/linux/arm64/jent/7/libjitterentropy.so.3.6.1
+  native/linux/x86_64/jent/7/libbcjent-jent.so
+  native/linux/x86_64/jent/7/libjitterentropy.so.3.6.1
+  ```
+- **Issue**: x86_64 libraries crash under ARM64→AMD64 emulation
+- **Solution**: Use kernel entropy configuration to avoid native library calls
 
 ## Security Considerations
 
