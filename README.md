@@ -189,49 +189,330 @@ The JENT (Java Entropy) provider can cause crashes in containerized environments
 
 ### FIPS Provider Loading
 ```
+NOTE: Picked up JDK_JAVA_OPTIONS: --add-exports=java.base/sun.security.internal.spec=ALL-UNNAMED --add-exports=java.base/sun.security.provider=ALL-UNNAMED -Djavax.net.ssl.trustStoreType=FIPS
+Picked up JAVA_TOOL_OPTIONS: -Djava.class.path=/usr/share/java/bouncycastle-fips/bc-fips.jar
+Sep 04, 2025 12:34:56 AM com.justincranford.tls.TlsConnect main
 INFO: Attempting to manually load BouncyCastle FIPS providers...
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
 INFO: Successfully loaded BouncyCastleFipsProvider
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
 INFO: Successfully loaded BouncyCastleJsseProvider
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
 INFO: === SECURITY PROVIDERS ===
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
 INFO: 1. BCFIPS v2.101: BouncyCastle Security Provider (FIPS edition) v2.1.1
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
 INFO: 2. BCJSSE v2.012: Bouncy Castle JSSE Provider Version 2.1.20
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO: 3. BCRNG v1.36: Bouncy Castle JENT Entropy Provider v1.3.6 [x86_64_linux 7 successfully loaded]
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO: 4. SUN v21: SUN (DSA key/parameter generation; DSA signing; SHA-1, MD5 digests; SecureRandom; X.509 certificates; PKCS12, JKS & DKS keystores; PKIX CertPathValidator; PKIX CertPathBuilder; LDAP, Collection CertStores, JavaPolicy Policy; JavaLoginConfig Configuration)
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO: 5. SunJGSS v21: Sun (Kerberos v5, SPNEGO)
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO: 6. SunSASL v21: Sun SASL provider(implements client mechanisms for: DIGEST-MD5, EXTERNAL, PLAIN, CRAM-MD5, NTLM; server mechanisms for: DIGEST-MD5, CRAM-MD5, NTLM)
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO: 7. XMLDSig v21: XMLDSig (DOM XMLSignatureFactory; DOM KeyInfoFactory; C14N 1.0, C14N 1.1, Exclusive C14N, Base64, Enveloped, XPath, XPath2, XSLT TransformServices)
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO: 8. SunPCSC v21: Sun PC/SC provider
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO: 9. JdkLDAP v21: JdkLDAP Provider (implements LDAP CertStore)
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO: 10. JdkSASL v21: JDK SASL provider(implements client and server mechanisms for GSSAPI)
+```
+
+### Available SSL Context Algorithms
+```
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO: === AVAILABLE SSL CONTEXT ALGORITHMS ===
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO:   TLSV1
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO:   TLS
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO:   TLSV1.1
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO:   TLSV1.3
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO:   DEFAULT
+Sep 04, 2025 12:34:57 AM com.justincranford.tls.TlsConnect main
+INFO:   TLSV1.2
 ```
 
 ### TLS Connection Information  
 ```
+Sep 04, 2025 12:34:58 AM com.justincranford.tls.TlsConnect main
+INFO: Trying SSLContext algorithm: TLSv1.3
+Sep 04, 2025 12:34:58 AM com.justincranford.tls.TlsConnect main
+INFO: Successfully initialized SSLContext with algorithm: TLSv1.3
+Sep 04, 2025 12:34:58 AM com.justincranford.tls.TlsConnect main
+INFO: Establishing TLS connection to github.com:443...
+Sep 04, 2025 12:34:59 AM com.justincranford.tls.TlsConnect main
 INFO: === TLS CONNECTION INFORMATION ===
+Sep 04, 2025 12:34:59 AM com.justincranford.tls.TlsConnect main
 INFO: Connected to: github.com
+Sep 04, 2025 12:34:59 AM com.justincranford.tls.TlsConnect main
 INFO: Protocol: TLSv1.3
+Sep 04, 2025 12:34:59 AM com.justincranford.tls.TlsConnect main
 INFO: Negotiated Cipher Suite: TLS_AES_128_GCM_SHA256
 ```
 
-### FIPS Cipher Suite Analysis Table
+### Complete FIPS Cipher Suite Analysis Table
 ```
-CIPHER SUITE ANALYSIS TABLE (Ranked by Security Strength) - FIPS ONLY
-==========================================================
-
-| Rank     | Category     | Protocol   | FIPS   | Cipher Suite                               | Client Support  | Client Enabled  | Server Support  | Server Enabled  |
-|----------+--------------+------------+--------+--------------------------------------------+-----------------+-----------------+-----------------+-----------------|
-| 1        | Modern       | TLSv1.3    | YES    | TLS_AES_256_GCM_SHA384                     | YES             | YES             | YES             | YES             |
-| 3        | Modern       | TLSv1.3    | YES    | TLS_AES_128_GCM_SHA256                     | YES             | YES             | YES             | YES             |
-...
-
-SUMMARY (FIPS CIPHER SUITES):
-  Total Cipher Suites: 14
-  Client Supported: 14
-  Client Enabled: 14  
-  Server Supported: 2
-  Common (Both Enabled): 2
+Sep 04, 2025 12:34:59 AM com.justincranford.tls.TlsConnect main
+INFO: === CIPHER SUITE ANALYSIS ===
+Sep 04, 2025 12:34:59 AM com.justincranford.tls.TlsConnect analyzeCipherSuites
+INFO: Testing 36 unique cipher suites for server compatibility...
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayCipherSuiteTable
+INFO: 
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayCipherSuiteTable
+INFO: CIPHER SUITE ANALYSIS TABLE (Ranked by Security Strength) - FIPS ONLY
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayCipherSuiteTable
+INFO: ==========================================================
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayCipherSuiteTable
+INFO: 
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayTableHeader
+INFO: | Rank     | Category     | Protocol   | FIPS   | Cipher Suite                                       | Client Support  | Client Enabled  | Server Support  | Server Enabled  |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayTableHeader
+INFO: |----------+--------------+------------+--------+----------------------------------------------------+-----------------+-----------------+-----------------+-----------------|
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 1        | Modern       | TLSv1.3    | YES    | TLS_AES_256_GCM_SHA384                             | YES             | YES             | YES             | YES             |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 3        | Modern       | TLSv1.3    | YES    | TLS_AES_128_GCM_SHA256                             | YES             | YES             | YES             | YES             |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 4        | Intermediate | TLSv1.2    | YES    | TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384            | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 6        | Intermediate | TLSv1.2    | YES    | TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256            | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 7        | Intermediate | TLSv1.2    | YES    | TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384              | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 9        | Intermediate | TLSv1.2    | YES    | TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256              | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 10       | Intermediate | TLSv1.2    | YES    | TLS_DHE_RSA_WITH_AES_256_GCM_SHA384                | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 12       | Intermediate | TLSv1.2    | YES    | TLS_DHE_RSA_WITH_AES_128_GCM_SHA256                | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 13       | Intermediate | TLSv1.2    | YES    | TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384            | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 14       | Intermediate | TLSv1.2    | YES    | TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256            | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 15       | Intermediate | TLSv1.2    | YES    | TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384              | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 16       | Intermediate | TLSv1.2    | YES    | TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256              | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 21       | Old          | TLSv1.2    | YES    | TLS_DHE_RSA_WITH_AES_256_CBC_SHA256                | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 22       | Old          | TLSv1.2    | YES    | TLS_DHE_RSA_WITH_AES_128_CBC_SHA256                | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayTableFooter
+INFO: |----------+--------------+------------+--------+----------------------------------------------------+-----------------+-----------------+-----------------+-----------------|
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayTableFooter
+INFO: 
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO: SUMMARY (FIPS CIPHER SUITES):
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO:   Total Cipher Suites: 14
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO:   Client Supported: 14
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO:   Client Enabled: 14
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO:   Server Supported: 2
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO:   Common (Both Enabled): 2
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO: 
 ```
 
-### Certificate Information
+### Complete Non-FIPS Cipher Suite Analysis Table
 ```
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayCipherSuiteTable
+INFO: 
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayCipherSuiteTable
+INFO: CIPHER SUITE ANALYSIS TABLE (Ranked by Security Strength) - NON-FIPS ONLY
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayCipherSuiteTable
+INFO: ==========================================================
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayCipherSuiteTable
+INFO: 
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayTableHeader
+INFO: | Rank     | Category     | Protocol   | FIPS   | Cipher Suite                                       | Client Support  | Client Enabled  | Server Support  | Server Enabled  |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayTableHeader
+INFO: |----------+--------------+------------+--------+----------------------------------------------------+-----------------+-----------------+-----------------+-----------------|
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 2        | Modern       | TLSv1.3    | NO     | TLS_CHACHA20_POLY1305_SHA256                       | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 5        | Intermediate | TLSv1.2    | NO     | TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256      | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 8        | Intermediate | TLSv1.2    | NO     | TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256        | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 11       | Intermediate | TLSv1.2    | NO     | TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256          | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 17       | Old          | TLSv1      | NO     | TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA               | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 18       | Old          | TLSv1      | NO     | TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA               | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 19       | Old          | TLSv1      | NO     | TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA                 | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 20       | Old          | TLSv1      | NO     | TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA                 | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 23       | Old          | SSL_v3     | NO     | TLS_DHE_RSA_WITH_AES_256_CBC_SHA                   | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 24       | Old          | SSL_v3     | NO     | TLS_DHE_RSA_WITH_AES_128_CBC_SHA                   | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 31       | Weak         | TLSv1.2    | NO     | TLS_DHE_DSS_WITH_AES_256_GCM_SHA384                | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 32       | Weak         | TLSv1.2    | NO     | TLS_DHE_DSS_WITH_AES_128_GCM_SHA256                | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 33       | Weak         | TLSv1.2    | NO     | TLS_DHE_DSS_WITH_AES_256_CBC_SHA256                | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 34       | Weak         | TLSv1.2    | NO     | TLS_DHE_DSS_WITH_AES_128_CBC_SHA256                | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 35       | Weak         | SSL_v3     | NO     | TLS_DHE_DSS_WITH_AES_256_CBC_SHA                   | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayKnownCipherSuites$4
+INFO: | 36       | Weak         | SSL_v3     | NO     | TLS_DHE_DSS_WITH_AES_128_CBC_SHA                   | YES             | YES             | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayUnknownCipherSuites$7
+INFO: | UNKNOWN  | Unknown      | Unknown    | UNKNOWN | TLS_AES_128_CCM_8_SHA256                           | YES             | NO              | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayUnknownCipherSuites$7
+INFO: | UNKNOWN  | Unknown      | Unknown    | UNKNOWN | TLS_AES_128_CCM_SHA256                             | YES             | NO              | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayUnknownCipherSuites$7
+INFO: | UNKNOWN  | Unknown      | Unknown    | UNKNOWN | TLS_DHE_RSA_WITH_AES_128_CCM                       | YES             | NO              | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayUnknownCipherSuites$7
+INFO: | UNKNOWN  | Unknown      | Unknown    | UNKNOWN | TLS_DHE_RSA_WITH_AES_128_CCM_8                     | YES             | NO              | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayUnknownCipherSuites$7
+INFO: | UNKNOWN  | Unknown      | Unknown    | UNKNOWN | TLS_DHE_RSA_WITH_AES_256_CCM                       | YES             | NO              | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayUnknownCipherSuites$7
+INFO: | UNKNOWN  | Unknown      | Unknown    | UNKNOWN | TLS_DHE_RSA_WITH_AES_256_CCM_8                     | YES             | NO              | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayUnknownCipherSuites$7
+INFO: | UNKNOWN  | Unknown      | Unknown    | UNKNOWN | TLS_ECDHE_ECDSA_WITH_AES_128_CCM                   | YES             | NO              | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayUnknownCipherSuites$7
+INFO: | UNKNOWN  | Unknown      | Unknown    | UNKNOWN | TLS_ECDHE_ECDSA_WITH_AES_128_CCM_8                 | YES             | NO              | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayUnknownCipherSuites$7
+INFO: | UNKNOWN  | Unknown      | Unknown    | UNKNOWN | TLS_ECDHE_ECDSA_WITH_AES_256_CCM                   | YES             | NO              | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$displayUnknownCipherSuites$7
+INFO: | UNKNOWN  | Unknown      | Unknown    | UNKNOWN | TLS_ECDHE_ECDSA_WITH_AES_256_CCM_8                 | YES             | NO              | NO              | NO              |
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayTableFooter
+INFO: |----------+--------------+------------+--------+----------------------------------------------------+-----------------+-----------------+-----------------+-----------------|
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displayTableFooter
+INFO: 
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO: SUMMARY (NON-FIPS CIPHER SUITES):
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO:   Total Cipher Suites: 26
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO:   Client Supported: 26
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO:   Client Enabled: 16
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO:   Server Supported: 0
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO:   Common (Both Enabled): 0
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect displaySummaryStatistics
+INFO: 
+```
+
+### Server Certificate Chain Analysis
+```
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
 INFO: Server Certificates:
-INFO:   Issuer Name: CN=Sectigo ECC Domain Validation Secure Server CA,O=Sectigo Limited...
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Issuer Name: CN=Sectigo ECC Domain Validation Secure Server CA,O=Sectigo Limited,L=Salford,ST=Greater Manchester,C=GB
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
 INFO:   Subject Name: CN=github.com
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
 INFO:   Serial Number: 227830333772454795620750445496253172213
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
 INFO:   Not Before: Wed Feb 05 00:00:00 GMT 2025
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
 INFO:   Not After: Thu Feb 05 23:59:59 GMT 2026
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Issuer Name: CN=USERTrust ECC Certification Authority,O=The USERTRUST Network,L=Jersey City,ST=New Jersey,C=US
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Subject Name: CN=Sectigo ECC Domain Validation Secure Server CA,O=Sectigo Limited,L=Salford,ST=Greater Manchester,C=GB
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Serial Number: 323523223200994243259439853290236540189
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Not Before: Fri Nov 02 00:00:00 GMT 2018
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Not After: Tue Dec 31 23:59:59 GMT 2030
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Issuer Name: CN=AAA Certificate Services,O=Comodo CA Limited,L=Salford,ST=Greater Manchester,C=GB
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Subject Name: CN=USERTrust ECC Certification Authority,O=The USERTRUST Network,L=Jersey City,ST=New Jersey,C=US
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Serial Number: 114849002793238729640937462275813569940
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Not Before: Tue Mar 12 00:00:00 GMT 2019
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO:   Not After: Sun Dec 31 23:59:59 GMT 2028
+```
+
+### SSL Session Details
+```
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO: Enabled Protocols:
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$0
+INFO:   TLSv1.3
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$0
+INFO:   TLSv1.2
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO: Enabled Cipher Suites:
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_AES_256_GCM_SHA384
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_AES_128_GCM_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_DSS_WITH_AES_256_GCM_SHA384
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_DSS_WITH_AES_128_GCM_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_RSA_WITH_AES_256_CBC_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_DSS_WITH_AES_256_CBC_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_RSA_WITH_AES_128_CBC_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_DSS_WITH_AES_128_CBC_SHA256
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_DSS_WITH_AES_256_CBC_SHA
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect lambda$main$1
+INFO:   TLS_DHE_DSS_WITH_AES_128_CBC_SHA
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO: Maximum TLS Fragment Length: 0
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO: End Point Identification Algorithm: null
+Sep 04, 2025 12:35:10 AM com.justincranford.tls.TlsConnect main
+INFO: Server Name Indication: Not available
 ```
 
 ## Key Technical Details
