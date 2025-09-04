@@ -24,6 +24,7 @@ import static com.justincranford.tls.TlsConnect.Constants.FipsStatus.*;
 public class TlsConnect {
     private static final Logger logger = Logger.getLogger(TlsConnect.class.getName());
 
+    // From https://wiki.mozilla.org/Security/Server_Side_TLS
     private static final List<CipherSuiteDetails> RANKED_CIPHER_SUITES = List.of(
         // Modern
         new CipherSuiteDetails(MODERN, RANK.getAndIncrement(), TLS_V1_3, FIPS, TLS_AES_256_GCM_SHA384, KxANY, AuANY, EncAESGCM256, MacAEAD),
