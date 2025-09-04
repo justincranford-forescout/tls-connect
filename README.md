@@ -49,12 +49,14 @@ This application performs detailed analysis of TLS cipher suites, categorizing t
 ## Features
 
 - ✅ **FIPS-140 Compliance**: Runs with BouncyCastle FIPS providers
-- ✅ **Cipher Suite Analysis**: Ranks 37+ cipher suites by security strength
+- ✅ **Cipher Suite Analysis**: Ranks 37+ cipher suites by security strength (Mozilla guidelines)
 - ✅ **Server Compatibility Testing**: Tests which cipher suites are supported by target servers
-- ✅ **Detailed Tables**: Separate FIPS vs Non-FIPS analysis tables
-- ✅ **Certificate Analysis**: Displays complete certificate chain information
+- ✅ **Detailed Analysis Tables**: Separate FIPS vs Non-FIPS analysis with support/enabled status
+- ✅ **Certificate Chain Analysis**: Displays complete certificate chain information with validation dates
 - ✅ **Containerized Deployment**: Optimized for FIPS-enabled container environments
 - ✅ **Standalone Application**: No external dependencies beyond JDK and BouncyCastle FIPS
+- ✅ **Comprehensive Testing**: Individual cipher suite server compatibility validation
+- ✅ **Security-First Design**: Only enables TLS 1.2+ protocols, comprehensive fallback mechanisms
 
 ## Project Structure
 
@@ -517,6 +519,21 @@ INFO: Server Name Indication: Not available
 
 ## Key Technical Details
 
+### Comprehensive Cipher Suite Analysis
+The application analyzes **37 ranked cipher suites** categorized by Mozilla Security guidelines:
+- **Modern** (3): TLS 1.3 with AEAD ciphers
+- **Intermediate** (13): TLS 1.2 with secure key exchange and encryption
+- **Old** (10): Legacy TLS/SSL with backward compatibility  
+- **Weak** (6): DSS-based or deprecated algorithms
+- **Special** (1): Protocol-level security mechanisms
+- **Unknown** (4+): CCM variants and unclassified cipher suites
+
+Each cipher suite is tested individually for:
+- ✅ Client support status
+- ✅ Client enabled status  
+- ✅ Server compatibility (live testing against target)
+- ✅ FIPS compliance classification
+
 ### Architecture Changes Made
 1. **Removed Spring Boot**: Converted from Spring Boot to standalone Java application
 2. **Replaced SLF4J**: Uses JDK `java.util.logging.Logger` instead of SLF4J
@@ -733,6 +750,37 @@ java --class-path "target/classes:$JAVA_FIPS_CLASSPATH" com.justincranford.tls.T
 - **Network Latency**: Performance depends on target server response time
 - **Container Overhead**: Minimal performance impact in containerized environment
 - **Memory Usage**: Low memory footprint (~50-100MB)
+
+## Testing
+
+### Run Unit Tests
+```bash
+# Standard host environment
+mvn test
+
+# In FIPS container environment  
+docker run --platform linux/amd64 --rm \
+  -v "$(pwd)":/workspace \
+  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0 \
+  sh -c "cd /workspace && mvn test"
+```
+
+### Test Coverage
+The test suite includes:
+- ✅ **Cipher Suite Metadata Validation**: Verifies all 37+ ranked cipher suites have complete metadata
+- ✅ **FIPS Classification Tests**: Validates proper FIPS vs non-FIPS categorization  
+- ✅ **Security Provider Tests**: Validates SSL context creation and provider fallbacks
+- ✅ **Protocol Configuration Tests**: Ensures only secure TLS protocols are enabled
+- ✅ **Cipher Suite Ranking Tests**: Validates uniqueness and proper security ordering
+- ✅ **Constants Validation**: Verifies all cipher suite constants and configuration
+- ✅ **Integration Tests**: Tests main application components and data structures
+
+### Manual Testing
+Test the application with different target servers:
+```bash
+# Test against different hosts (modify DEFAULT_HOST in Constants.java)
+# Examples: badssl.com, github.com, google.com, cloudflare.com
+```
 
 ## Future Enhancements
 
