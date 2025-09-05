@@ -10,7 +10,7 @@ A comprehensive TLS cipher suite analysis application that demonstrates FIPS-com
 ```bash
 docker run --platform linux/amd64 --rm \
   -v "$(pwd)":/workspace \
-  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0 \
+  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-17-dev \
   sh -c "cd /workspace && \
          mkdir -p target/classes && \
          javac src/main/java/com/justincranford/tls/TlsConnect.java -d target/classes && \
@@ -31,7 +31,7 @@ Add this to your `~/.zshrc` or `~/.bashrc`:
 ```bash
 alias tls-connect-fips='docker run --platform linux/amd64 --rm \
   -v "$(pwd)":/workspace \
-  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0 \
+  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-17-dev \
   sh -c "cd /workspace && \
          mkdir -p target/classes && \
          javac src/main/java/com/justincranford/tls/TlsConnect.java -d target/classes && \
@@ -112,7 +112,7 @@ If you already have compiled classes, use the shorter version:
 ```bash
 docker run --platform linux/amd64 --rm \
   -v "$(pwd)":/workspace \
-  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0 \
+  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-17-dev \
   sh -c "cd /workspace && \
          java --class-path \"target/classes:\$JAVA_FIPS_CLASSPATH\" \
               -Djava.security.properties=/usr/lib/jvm/jdk-fips-config/kernel-entropy.java.security \
@@ -127,7 +127,7 @@ For detailed exploration and debugging, you can work interactively:
 ```bash
 docker run --platform linux/amd64 -it --rm \
   -v "$(pwd)":/workspace \
-  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0 \
+  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-17-dev \
   sh
 ```
 
@@ -660,7 +660,7 @@ mvn test
 ## Container Environment Details
 
 ### Base Image
-- **Image**: `crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0`
+- **Image**: `crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-17-dev`
 - **JDK**: Adoptium OpenJDK 21.0.8 with FIPS configuration
 - **OS**: Alpine Linux (Chainguard minimal)
 
@@ -761,7 +761,7 @@ mvn test
 # In FIPS container environment  
 docker run --platform linux/amd64 --rm \
   -v "$(pwd)":/workspace \
-  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0 \
+  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-17-dev \
   sh -c "cd /workspace && mvn test"
 ```
 
@@ -771,7 +771,7 @@ To verify Mac algorithm spelling compatibility in the FIPS environment:
 # Quick Mac algorithm test in FIPS container
 docker run --platform linux/amd64 --rm \
   -v "$(pwd)":/workspace \
-  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0 \
+  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-17-dev \
   sh -c "cd /workspace && \
          mkdir -p target/classes && \
          javac src/main/java/com/justincranford/tls/TlsConnect.java -d target/classes && \
@@ -835,7 +835,7 @@ For advanced debugging, exploration, or manual execution, you can connect direct
 ```bash
 docker run --platform linux/amd64 -it --rm \
   -v "$(pwd)":/workspace \
-  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0 \
+  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-17-dev \
   /bin/sh
 ```
 
