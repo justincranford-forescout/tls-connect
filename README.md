@@ -802,3 +802,90 @@ Test the application with different target servers:
 ## License
 
 This project is provided as-is for educational and testing purposes. Ensure compliance with your organization's security policies when using in production environments.
+
+## Container Shell Access
+
+For advanced debugging, exploration, or manual execution, you can connect directly to the FIPS container with an interactive shell:
+
+### Interactive Shell Session
+```bash
+docker run --platform linux/amd64 -it --rm \
+  -v "$(pwd)":/workspace \
+  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0 \
+  /bin/sh
+```
+
+### What You Can Do in the Container Shell
+
+Once connected, you'll have access to the full FIPS-enabled environment:
+
+**Navigate to your project:**
+```bash
+cd /workspace
+```
+
+**Explore the FIPS environment:**
+```bash
+# Check Java version and FIPS configuration
+java --version
+
+# List BouncyCastle FIPS JAR files
+ls -la /usr/share/java/bouncycastle-fips/
+
+# View FIPS security configuration
+cat /usr/lib/jvm/java-21-adoptium/conf/security/java.security | grep security.provider
+
+# Check available entropy configurations
+ls -la /usr/lib/jvm/jdk-fips-config/
+```
+
+**Compile and run manually:**
+```bash
+# Create target directory
+mkdir -p target/classes
+
+# Compile the application
+javac src/main/java/com/justincranford/tls/TlsConnect.java -d target/classes
+
+# Run with kernel entropy (recommended)
+java --class-path "target/classes:$JAVA_FIPS_CLASSPATH" \
+  -Djava.security.properties=/usr/lib/jvm/jdk-fips-config/kernel-entropy.java.security \
+  com.justincranford.tls.TlsConnect
+
+# Or run with default FIPS configuration (may crash on ARM64 hosts)
+java --class-path "target/classes:$JAVA_FIPS_CLASSPATH" \
+  com.justincranford.tls.TlsConnect
+```
+
+**Debug environment variables:**
+```bash
+# Check FIPS-related environment variables
+echo "JAVA_FIPS_CLASSPATH: $JAVA_FIPS_CLASSPATH"
+echo "JDK_JAVA_OPTIONS: $JDK_JAVA_OPTIONS"
+echo "JAVA_TOOL_OPTIONS: $JAVA_TOOL_OPTIONS"
+
+# List all Java-related environment variables
+env | grep -i java
+```
+
+**Explore BouncyCastle FIPS components:**
+```bash
+# Check BouncyCastle FIPS JAR contents
+jar tf /usr/share/java/bouncycastle-fips/bc-fips.jar | head -20
+
+# Check native library dependencies
+ls -la /usr/lib/x86_64-linux-gnu/ | grep -i jent
+ls -la /usr/lib/x86_64-linux-gnu/ | grep -i bouncy
+```
+
+### Exit the Container
+When you're done exploring, simply type:
+```bash
+exit
+```
+
+This interactive approach is perfect for:
+- 🔍 **Debugging**: Investigating FIPS configuration issues
+- 📚 **Learning**: Understanding the FIPS container environment  
+- 🧪 **Experimentation**: Testing different configurations manually
+- 🛠️ **Development**: Iterative development and testing
