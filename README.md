@@ -765,6 +765,30 @@ docker run --platform linux/amd64 --rm \
   sh -c "cd /workspace && mvn test"
 ```
 
+### Test Mac Algorithm Spellings in FIPS Container
+To verify Mac algorithm spelling compatibility in the FIPS environment:
+```bash
+# Quick Mac algorithm test in FIPS container
+docker run --platform linux/amd64 --rm \
+  -v "$(pwd)":/workspace \
+  crplatnpdacreaus001.azurecr.io/chainguard/adoptium-jdk-fips:adoptium-openjdk-21.0 \
+  sh -c "cd /workspace && \
+         mkdir -p target/classes && \
+         javac src/main/java/com/justincranford/tls/TlsConnect.java -d target/classes && \
+         java --class-path \"target/classes:\$JAVA_FIPS_CLASSPATH\" \
+              -Djava.security.properties=/usr/lib/jvm/jdk-fips-config/kernel-entropy.java.security \
+              com.justincranford.tls.TlsConnect 2>&1 | grep -A 10 'MAC ALGORITHM'"
+```
+
+Look for output like:
+```
+INFO: === MAC ALGORITHM SPELLING TEST ===
+INFO: ✅ Mac.getInstance("HMACSHA256") SUCCESS - Provider: BCFIPS
+INFO: ✅ Mac.getInstance("HmacSHA256") SUCCESS - Provider: BCFIPS
+```
+
+If you see `❌ FAILED` for either spelling, that indicates the FIPS environment doesn't support that particular algorithm name variation.
+
 ### Test Coverage
 The test suite includes:
 - ✅ **Cipher Suite Metadata Validation**: Verifies all 37+ ranked cipher suites have complete metadata

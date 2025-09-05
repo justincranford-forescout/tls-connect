@@ -100,6 +100,18 @@ public class TlsConnect {
                 logger.info("  " + alg);
             }
             
+            // Test Mac algorithm spellings for FIPS compatibility
+            logger.info("=== MAC ALGORITHM SPELLING TEST ===");
+            String[] macSpellings = {"HMACSHA256", "HmacSHA256"};
+            for (String macAlgorithm : macSpellings) {
+                try {
+                    javax.crypto.Mac mac = javax.crypto.Mac.getInstance(macAlgorithm);
+                    logger.info("✅ Mac.getInstance(\"" + macAlgorithm + "\") SUCCESS - Provider: " + mac.getProvider().getName());
+                } catch (java.security.NoSuchAlgorithmException e) {
+                    logger.warning("❌ Mac.getInstance(\"" + macAlgorithm + "\") FAILED: " + e.getMessage());
+                }
+            }
+            
             // Try different SSL context algorithms that work with FIPS
             SSLContext sslContext = null;
             String[] algorithmsToTry = {TLS_V1_3, TLS_V1_2, "TLS", "Default"};
